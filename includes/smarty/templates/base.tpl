@@ -1,8 +1,10 @@
-<!DOCTYPE html>
-<html lang=es>
+<!doctype html>
+<html>
 	<head>
-		<title>{$head_title}</title>
-	{include file="bootstrap.tpl"}
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>A punt! - estudiants</title>
+	{include file="htmlhead.tpl"}
 	{block "customscripts"}{/block}
 	</head>
 	<body>
