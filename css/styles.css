@@ -1,0 +1,143 @@
+/* Universal Box Sizing (last version) */
+
+html {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+*, *:before, *:after {
+	-webkit-box-sizing: inherit;
+	-moz-box-sizing: inherit;
+	box-sizing: inherit;
+}
+
+/* Estils propis */
+/*
+ * COLORES
+ * -------
+ *
+ * ROJO:	rgba(223,69,66,1)
+ * VERDE:	rgba(218,255,40,1)
+ * GRIS:	rgba(43,34,34,1)
+ *
+ */
+
+html {
+	font-size: 62.5%;
+}
+body {
+	margin: 0;
+	padding: 0;
+	font-family: 'Fira Sans', sans-serif;
+	font-weight: 400;
+}
+.bg_students {
+	background-image: url(../img/bg_students.jpg);
+	background-attachment: fixed;
+	background-position: center;
+	width: 100%;
+	height: 100%;
+}
+.navegador {
+	font-size: 1.1rem;
+	padding: 0 4px;
+	width: 100%;
+	padding: 30px;
+	overflow: hidden;
+}
+.lang {
+	float: left;
+}
+.lang {
+	color: rgba(223,69,66,1);
+	letter-spacing: 1px;
+}
+.lang a {
+	color: #fff;
+	text-decoration: none;
+}
+.lang a:hover {
+	color: rgba(218,255,40,1);
+}
+.boton_cambio {
+	float: right;
+	font-size: 1.4rem;
+	padding: 16px 19px;
+	border: 1px solid white;
+	color: white;
+	text-decoration: none;
+	border-radius: 3px;
+	line-height: 1.4rem;
+}
+.boton_cambio:hover {
+	background-color: rgba(218,255,40,1);
+	border: 1px solid rgba(218,255,40,1);
+	color: rgba(43,34,34,1);
+}
+
+.contenedor h1, .contenedor h2 {
+	text-align: center;
+	margin: 0;
+	padding: 0;
+}
+.contenedor h1 img{
+	width: 200px; 
+}
+.contenedor h2 {
+	color: white;
+	font-size: 2.7rem;
+	line-height: 2.7rem;
+	font-weight: 700;
+	letter-spacing: 1px;
+	padding: 5px 10px 40px; 
+}
+.contenedor form {
+	text-align: center;
+	width: 300px;
+	margin: 0 auto;
+}
+.contenedor form input {
+	font-family: 'Fira Sans', sans-serif;
+	font-size: 1.3rem;
+	width: 300px;
+	height: 50px;
+	border: 0;
+	padding: 10px;
+	margin: 1px;
+	border-radius: 3px;
+}
+.contenedor form button {
+	font-family: 'Fira Sans', sans-serif;
+	font-size: 1.6rem;
+	font-weight: 800;
+	margin-top: 10px;
+	padding: 10px;
+	width: 300px;
+	height: 50px;
+	border: 0;
+	background-color: #DAFF28;
+	background: linear-gradient(#C0E528,#DAFF28);
+	border-radius: 3px;
+	cursor: pointer;
+	color: rgba(43,34,34,1);
+}
+.contenedor form button:hover {
+	background-color: #C0E528;
+	background: linear-gradient(#DAFF28,#C0E528);
+}
+.contenedor form button:active {
+	background: #B9CE20;
+}
+.contenedor p {
+	font-size: 1.3rem;
+	text-align: center;
+	color: white;
+}
+.contenedor p a {
+	font-weight: 800;
+	color: white;
+	text-decoration: none;
+}
+.contenedor p a:hover {
+	color: rgba(218,255,40,1);
+}
