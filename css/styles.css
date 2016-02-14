@@ -1,4 +1,4 @@
-/* Universal Box Sizing (last version) */
+/* Universal Box Sizing */
 
 html {
 	-webkit-box-sizing: border-box;
@@ -22,25 +22,32 @@ html {
  *
  */
 
+::selection {
+    color: white; 
+    background: rgba(223,69,66,1);
+}
+
 html {
 	font-size: 62.5%;
-}
+	}
 body {
 	margin: 0;
 	padding: 0;
 	font-family: 'Fira Sans', sans-serif;
 	font-weight: 400;
 }
-.bg_students {
+header {
 	background-image: url(../img/bg_students.jpg);
 	background-attachment: fixed;
+	background-size: cover;
 	background-position: center;
-	width: 100%;
-	height: 100%;
+	overflow: hidden;
 }
-.navegador {
+.cont_students {
+	height: 805px;
+}
+.topbar {
 	font-size: 1.1rem;
-	padding: 0 4px;
 	width: 100%;
 	padding: 30px;
 	overflow: hidden;
@@ -74,11 +81,10 @@ body {
 	border: 1px solid rgba(218,255,40,1);
 	color: rgba(43,34,34,1);
 }
-
 .contenedor h1, .contenedor h2 {
 	text-align: center;
 	margin: 0;
-	padding: 0;
+	padding: 10px 0 0;
 }
 .contenedor h1 img{
 	width: 200px; 
@@ -89,7 +95,7 @@ body {
 	line-height: 2.7rem;
 	font-weight: 700;
 	letter-spacing: 1px;
-	padding: 5px 10px 40px; 
+	padding: 15px 10px 40px; 
 }
 .contenedor form {
 	text-align: center;
@@ -103,14 +109,14 @@ body {
 	height: 50px;
 	border: 0;
 	padding: 10px;
-	margin: 1px;
+	margin-top: 1px;
 	border-radius: 3px;
 }
 .contenedor form button {
 	font-family: 'Fira Sans', sans-serif;
 	font-size: 1.6rem;
 	font-weight: 800;
-	margin-top: 10px;
+	margin-top: 15px;
 	padding: 10px;
 	width: 300px;
 	height: 50px;
@@ -140,4 +146,51 @@ body {
 }
 .contenedor p a:hover {
 	color: rgba(218,255,40,1);
+}
+.boton_quisom {
+	position: absolute;
+	bottom: 0;
+	width: 80px;
+	left: 50%;
+	margin-left: -35px;
+	background-color: rgba(43,34,34,1);
+	border-radius: 100px;
+	height: 90px;
+	margin-bottom: -50px;
+	text-align: center;
+	cursor: pointer;
+}
+.boton_quisom a{
+	color: rgba(255,255,255,0.9);
+	line-height: 50px;
+	font-size: 1rem;
+	text-transform: uppercase;
+	margin-top: 10px;
+	text-decoration: none;
+}
+.contenedor_quisom {
+	background-color: rgba(43,34,34,1);
+	padding: 100px 0;
+}
+.contenedor_quisom span {
+	font-weight: 600;
+	letter-spacing: 1px;
+}
+.contenedor_quisom p {
+	margin: 0;
+	padding: 10px 0 60px;
+	color: white;
+	text-align: center;
+	font-size: 2rem;
+	font-weight: 300;
+	width: 80%;
+	margin: 0 auto;
+	line-height: 1.4;
+}
+.contenedor_quisom h2 {
+	padding: 0;
+	margin: 0;
+	font-size: 3.1rem;
+	color: white;
+	text-align: center;
 }
