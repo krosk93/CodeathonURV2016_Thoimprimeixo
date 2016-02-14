@@ -25,15 +25,14 @@ class DbHandler {
      * @param String $telefono Teléfono del usuario
      * @param String $dni DNI / NIE / Pasaporte del usuario
      */
-    public function crearUsuario($email, $password, $nombre, $apellidos, $telefono, $dni) {
-        $response = array();
+    public function crearUsuario($email, $password, $nombre, $apellidos, $telefono, $dni, $suscrito) {
 
         // Comprobar si el usuario existe
-        if (!$this->usuarioExiste($dni, $email)) {
+        if (!$this->usuarioExiste($dni, $email, $telefono)) {
 
             // consulta para insertar
-            $stmt = $this->conn->prepare("INSERT INTO Usuarios (email, password, nombre, apellidos, telefono, dni) VALUES (?, ?, ?, ?, ?, ?)");
-            $stmt->bind_param("ssssss", $email, $password, $nombre, $apellidos, $telefono, $dni);
+            $stmt = $this->conn->prepare("INSERT INTO Usuarios (email, password, nombre, apellidos, telefono, dni, suscrito) VALUES (?, ?, ?, ?, ?, ?, ?)");
+            $stmt->bind_param("ssssssi", $email, $password, $nombre, $apellidos, $telefono, $dni, $suscrito);
 
             $result = $stmt->execute();
 
@@ -46,14 +45,12 @@ class DbHandler {
                     return 'OK+'.$new_user_id;
             } else {
                 // Fallo al crear el usuario
-                return USER_CREATE_FAILED;
+                return OBJECT_CREATE_FAILED;
             }
         } else {
             // El usuario ya existe
-            return USER_ALREADY_EXIST;
+            return OBJECT_ALREADY_EXISTS;
         }
-
-        return $response;
     }
 
     /**
@@ -86,7 +83,7 @@ class DbHandler {
     }
 
     /**
-     * Buscando usuarios duplicados por DNI y por Email
+     * Buscando si el usuario existe por DNI, por Email y por telefono
      * @param String $dni DNI del usuario
      * @param String $email Email del usuario
      * @param String $telefono Teléfono del usuario
@@ -103,11 +100,11 @@ class DbHandler {
     }
 
     /**
-     * Fetching user by id
-     * @param String $id User email id
+     * Obtener usuario por id
+     * @param Integer $id id del usuario
      */
     public function obtenerUsuario($id) {
-        $stmt = $this->conn->prepare("SELECT id, email, nombre, apellidos, telefono, dni, validado FROM usuarios WHERE id = ?");
+        $stmt = $this->conn->prepare("SELECT id, email, nombre, apellidos, telefono, dni, validado FROM Usuarios WHERE id = ?");
         $stmt->bind_param("i", $id);
         if ($stmt->execute()) {
             $result = $stmt->get_result()->fetch_array(MYSQLI_ASSOC);
@@ -123,7 +120,7 @@ class DbHandler {
      * @return array Usuarios sin validar.
      */
     public function obtenerUsuariosNoValidados() {
-        return $this->conn->query('SELECT id, email, dni FROM usuarios WHERE validado = 0 ORDER BY dni DESC');
+        return $this->conn->query('SELECT id, email, dni FROM Usuarios WHERE validado = 0 ORDER BY dni DESC');
     }
 
     /**
@@ -143,5 +140,64 @@ class DbHandler {
 }
 
 
+/* métodos para la tabla Copisterias */
+
+/**
+ * Creando nueva copisteria
+ * @param String $email Email
+ * @param String $password Contraseña
+ * @param String $nombre Nombre del usuario
+ * @param String $latitud Latitud (Coordenadas)
+ * @param String $longitud Longitud (Coordenadas)
+ * @param String $direccion Direccion de la copisteria
+ */
+ public function crearCopisteria($email, $password, $nombre, $latitud, $longitud, $direccion) {
+
+     // Comprobar si el usuario existe
+     if (!$this->copisteriaExiste($email)) {
+
+         // consulta para insertar
+         $stmt = $this->conn->prepare("INSERT INTO Copisterias (email, password, nombre, latitud, longitud, direccion) VALUES (?, ?, ?, ?, ?, ?)");
+         $stmt->bind_param("sssffs", $email, $password, $nombre, $apellidos, $telefono, $dni);
+
+         $result = $stmt->execute();
+
+         $stmt->close();
+
+         // Comprobar resultado
+         if ($result) {
+             $new_copy_id = $this->conn->insert_id;
+             // Usuario creado correctamente
+                 return 'OK+'.$new_copy_id;
+         } else {
+             // Fallo al crear la copisteria
+             return OBJECT_CREATE_FAILED;
+         }
+     } else {
+         // La copisteria ya existe
+         return OBJECT_ALREADY_EXISTS;
+     }
+ }
+
+ /**
+  * Buscando si el usuario existe por DNI, por Email y por telefono
+  * @param String $dni DNI del usuario
+  * @param String $email Email del usuario
+  * @param String $telefono Teléfono del usuario
+  * @return boolean
+  */
+ private function copisteriaExiste($email) {
+     $stmt = $this->conn->prepare("SELECT id FROM Copisterias WHERE email=? LIMIT 1");
+     $stmt->bind_param("s", $email);
+     $stmt->execute();
+     $stmt->store_result();
+     $num_rows = $stmt->num_rows;
+     $stmt->close();
+     return $num_rows > 0;
+ }
+
+
+
+}
 
 ?>
