@@ -6,7 +6,8 @@
 class DbHandler {
 
     private $conn;
-    private $logged_in = false;
+    private $user_logged_in = false;
+    private $copisteria_logged_in = false;
 
     function __construct() {
         require_once dirname(__FILE__) . '/DbConnect.php';
@@ -15,7 +16,10 @@ class DbHandler {
         $this->conn = $db->connect();
         session_start();
         if (isset($_SESSION['user'])) {
-          $logged_in = true;
+          $user_logged_in = true;
+        }
+        if (isset($_SESSION['copisteria'])) {
+          $copisteria_logged_in = true;
         }
     }
 
@@ -63,7 +67,7 @@ class DbHandler {
     * @param String email
     * @param String password
     */
-    public function iniciarSesion($email, $password) {
+    public function iniciarSesionUsuario($email, $password) {
       $stmt = $this->conn->prepare("SELECT id FROM Usuarios WHERE email=? AND password=? LIMIT 1");
       $stmt->bind_param("ss", $email, $password);
       $stmt->execute();
@@ -71,11 +75,11 @@ class DbHandler {
       $num_rows = $stmt->num_rows;
       if($num_rows > 0) {
         $_SESSION['user'] = $stmt->fetch_row()[0];
-        $logged_in = true;
+        $user_logged_in = true;
         return true;
       } else {
-        $logged_in = false;
-        if(isset($_SESSION['user']) unset($_SESSION['user']);
+        $user_logged_in = false;
+        if(isset($_SESSION['user'])) unset($_SESSION['user']);
         return false;
       }
       $stmt->close();
@@ -85,8 +89,8 @@ class DbHandler {
     * Comprobar login
     * @return Boolean Iniciada sesión
     */
-    public function comprobarLogin() {
-      return $logged_in;
+    public function comprobarLoginUsuario() {
+      return $user_logged_in;
     }
 
     /**
@@ -94,16 +98,16 @@ class DbHandler {
     * @return Integer id usuario
     */
     public function obteneridSesionUsuario() {
-      if(isset($_SESSION['user') && $logged_in) return $_SESSION['user'];
+      if(isset($_SESSION['user']) && $user_logged_in) return $_SESSION['user'];
       return NULL;
     }
 
     /**
     * Cerrar sesión
     */
-    public function cerrarSesion(){
-      session_destroy();
-      $logged_in = false;
+    public function cerrarSesionUsuario(){
+      unset($_SESSION['user']);
+      $user_logged_in = false;
     }
 
 
@@ -191,7 +195,6 @@ class DbHandler {
         }
         return $respuesta;
     }
-}
 
 
 /* métodos para la tabla Copisterias */
@@ -205,14 +208,14 @@ class DbHandler {
  * @param String $longitud Longitud (Coordenadas)
  * @param String $direccion Direccion de la copisteria
  */
- public function crearCopisteria($email, $password, $nombre, $latitud, $longitud, $direccion) {
+ public function crearCopisteria($email, $password, $nombre, $latitud, $longitud, $telefono, $direccion) {
 
      // Comprobar si el usuario existe
      if (!$this->copisteriaExiste($email)) {
 
          // consulta para insertar
-         $stmt = $this->conn->prepare("INSERT INTO Copisterias (email, password, nombre, latitud, longitud, direccion) VALUES (?, ?, ?, ?, ?, ?)");
-         $stmt->bind_param("sssffs", $email, $password, $nombre, $apellidos, $telefono, $dni);
+         $stmt = $this->conn->prepare("INSERT INTO Copisterias (email, password, nombre, latitud, longitud, telefono, direccion) VALUES (?, ?, ?, ?, ?, ?, ?)");
+         $stmt->bind_param("sssddss", $email, $password, $nombre, $latitud, $longitud, $telefono, $direccion);
 
          $result = $stmt->execute();
 
@@ -264,6 +267,54 @@ class DbHandler {
      } else {
          return NULL;
      }
+ }
+
+ /**
+ * Iniciar sesión
+ * @param String email
+ * @param String password
+ */
+ public function iniciarSesionCopisteria($email, $password) {
+   $stmt = $this->conn->prepare("SELECT id FROM Copisterias WHERE email=? AND password=? LIMIT 1");
+   $stmt->bind_param("ss", $email, $password);
+   $stmt->execute();
+   $stmt->store_result();
+   $num_rows = $stmt->num_rows;
+   if($num_rows > 0) {
+     $_SESSION['copisteria'] = $stmt->fetch_row()[0];
+     $copisteria_logged_in = true;
+     return true;
+   } else {
+     $copisteria_logged_in = false;
+     if(isset($_SESSION['copisteria'])) unset($_SESSION['copisteria']);
+     return false;
+   }
+   $stmt->close();
+ }
+
+ /**
+ * Comprobar login
+ * @return Boolean Iniciada sesión
+ */
+ public function comprobarLoginCopisteria() {
+   return $copisteria_logged_in;
+ }
+
+ /**
+ * Obtener id usuario iniciado
+ * @return Integer id usuario
+ */
+ public function obteneridSesionCopisteria() {
+   if(isset($_SESSION['copisteria']) && $copisteria_logged_in) return $_SESSION['copisteria'];
+   return NULL;
+ }
+
+ /**
+ * Cerrar sesión
+ */
+ public function cerrarSesionCopisteria(){
+   unset($_SESSION['copisteria']);
+   $copisteria_logged_in = false;
  }
 
  /* métodos para la tabla Tarifas */
